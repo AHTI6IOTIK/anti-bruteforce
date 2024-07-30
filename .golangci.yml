@@ -1,0 +1,86 @@
+run:
+  tests: true
+
+linters-settings:
+  funlen:
+    lines: 150
+    statements: 80
+  depguard:
+    rules:
+      main:
+        files:
+          - $all
+          - "!$test"
+        allow:
+          - $gostd
+          - github.com/AHTI6IOTIK/anti-bruteforce
+          - github.com/spf13/cobra
+          - github.com/spf13/viper
+          - github.com/jackc/pgx/v5/pgxpool
+          - github.com/lib/pq
+          - github.com/go-redis/redis
+          - github.com/prometheus/client_golang/prometheus/promhttp
+          - github.com/grpc-ecosystem/go-grpc-prometheus
+          - github.com/grpc-ecosystem/go-grpc-middleware/logging/zap
+          - github.com/grpc-ecosystem/go-grpc-middleware
+          - github.com/golang/protobuf/ptypes/wrappers
+          - github.com/Masterminds/squirrel
+          - github.com/seancfoley/ipaddress-go/ipaddr
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+#    - deadcode --deprecated
+    - depguard
+    - dogsled
+    - dupl
+    - durationcheck
+    - errorlint
+    - exhaustive
+    - exportloopref
+    - funlen
+    - gci
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - gofmt
+    - gofumpt
+    - goheader
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+#    - ifshort --deprecated
+    - importas
+    - ineffassign
+    - lll
+    - makezero
+    - misspell
+    - nestif
+    - nilerr
+    - noctx
+    - nolintlint
+    - prealloc
+    - predeclared
+    - revive
+#    - rowserrcheck --is disabled because of generics
+#    - sqlclosecheck --is disabled because of generics.
+    - staticcheck
+#    - structcheck --deprecated
+    - stylecheck
+    - tagliatelle
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+#    - varcheck --deprecated
+#    - wastedassign --is disabled because of generics.
+    - whitespace
