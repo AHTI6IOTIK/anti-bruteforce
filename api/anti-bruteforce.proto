@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package service;
+option go_package=".;proto";
+
+import "google/protobuf/wrappers.proto";
+
+message Request {
+  string login = 1;
+  string pass = 2;
+  string ip = 3;
+}
+
+message Response {
+  google.protobuf.BoolValue ok = 1;
+  string message = 2;
+}
+
+message Subnet {
+  string subnet = 1;
+}
+
+message ListResponse {
+
+}
+
+service AntiBruteforce{
+  rpc AllowRequest(Request) returns (Response);
+  rpc ClearBucket(Request) returns(Response);
+  rpc AddToBlackList(Subnet) returns(Response);
+  rpc AddToWhiteList(Subnet) returns(Response);
+  rpc RemoveFromBlackList(Subnet) returns(Response);
+  rpc RemoveFromWhiteList(Subnet) returns(Response);
+}

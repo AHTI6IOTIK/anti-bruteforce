@@ -1,0 +1,80 @@
+version: '3.9'
+services:
+  anti-bruteforce:
+    build:
+      context: .
+      dockerfile: build/anti-bruteforce/Dockerfile
+    ports:
+      - '50051:50051'
+      - '9091:9091'
+    environment:
+      GRPC_HOST: ":50051"
+      APP_REDIS_HOST: "redis"
+      APP_REDIS_PORT: "6379"
+      APP_REDIS_PASSWORD: ""
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - default
+    restart: unless-stopped
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    restart: unless-stopped
+    networks:
+      - default
+
+  migrate:
+    container_name: migrate
+    build:
+      context: .
+      dockerfile: build/migrations/Dockerfile
+    depends_on:
+      - postgres
+    restart: on-failure
+    networks:
+      - default
+
+  redis:
+    image: 'redis:alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_REPLICATION_MODE: master
+      ALLOW_EMPTY_PASSWORD: yes
+    restart: unless-stopped
+    networks:
+      - default
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: build/prometheus/Dockerfile
+      network: host
+    ports:
+      - '9090:9090'
+    networks:
+      - default
+
+  integration_tests:
+    build:
+      context: .
+      dockerfile: build/tests/Dockerfile
+    command: "go test -tags integration ./tests/integration/..."
+    environment:
+      GRPC_HOST: "anti-bruteforce:50051"
+    depends_on:
+      - anti-bruteforce
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
