@@ -151,6 +151,9 @@ func TestListRepo_SaveToList(t *testing.T) {
 			assert.Equal(t, tc.expectedOk, ok)
 		})
 	}
+
+	err := listrepo.Truncate()
+	assert.NoError(t, err)
 }
 
 func TestListRepo_DeleteFromList(t *testing.T) {
@@ -183,4 +186,7 @@ func TestListRepo_DeleteFromList(t *testing.T) {
 			assert.Equal(t, tc.expectedMess, mess)
 		})
 	}
+
+	err = listrepo.Truncate()
+	assert.NoError(t, err)
 }

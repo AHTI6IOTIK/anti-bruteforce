@@ -183,3 +183,16 @@ func (lr *ListRepo) Drop() error {
 
 	return nil
 }
+
+// Truncate table.
+func (lr *ListRepo) Truncate() error {
+	ctx := context.Background()
+
+	query := "truncate lists"
+	_, err := lr.Postgres.Pool.Exec(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
